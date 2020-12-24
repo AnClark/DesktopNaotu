@@ -54,6 +54,9 @@ export function saveKm(filePath: string) {
     naotuBase.setState("none");
   } catch (error) {
     logger.error("saveKm error, ", error);
+    
+    // 加上表示文件已修改的符号，提醒用户保存失败
+    naotuBase.addUnsavedIndicator();
   }
 }
 

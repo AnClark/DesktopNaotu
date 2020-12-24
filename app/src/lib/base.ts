@@ -1,5 +1,6 @@
 import { addRecentlyRecord } from "./recently";
 import { StatusList } from "../define";
+import { getAppInstance, showFileName } from "./electron";
 
 /**
  * 当做状态机类用
@@ -37,6 +38,7 @@ class NaotuBase {
    */
   public OnSaved() {
     this._savedNum = this._changedNum;
+    this.removeUnsavedIndicator();
   }
 
   /**
@@ -44,6 +46,7 @@ class NaotuBase {
    */
   public OnEdited() {
     this._changedNum++;
+    this.addUnsavedIndicator();
   }
 
   /**
@@ -52,6 +55,35 @@ class NaotuBase {
   public HasSaved() {
     // 修改的序号 与 保存的序号一致
     return this._changedNum === this._savedNum;
+  }
+
+  /**
+   * 在标题前加入星号，表示文件已修改
+   * 
+   * TODO: 考虑自动保存功能打开时，还需不需要显示indicator
+   */
+  public addUnsavedIndicator() {
+    let appInstance = getAppInstance();
+    if (appInstance) {
+      // 先重设标题，防止星号无限叠加。默认的标题是“文件路径 + 程序名”
+      let path = naotuBase.getCurrentKm();
+      if (path)   // 如果已打开文件
+        showFileName(path);
+      else        // 如果未打开文件
+        showFileName("");   // 传入空字符串，则只显示程序名
+
+      // 设置标题，加星号
+      appInstance.setTitle(`* ${appInstance.getTitle()}`);
+    }
+  }
+
+  /**
+   * 去掉标题前表示已修改的符号（即重设标题）
+   */
+  public removeUnsavedIndicator() {
+    let path = naotuBase.getCurrentKm();
+    if (path)
+      showFileName(path);
   }
 
   //#region 单例化
