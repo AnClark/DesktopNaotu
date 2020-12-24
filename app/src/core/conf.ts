@@ -56,6 +56,8 @@ class NaotuConfig {
    */
   editorWindowWidth?: number;   // 窗口宽度
   editorWindowHeight?: number;  // 窗口高度
+  editorWindowX?: number | undefined;       // 窗口横轴位置
+  editorWindowY?: number | undefined;       // 窗口纵轴位置
 
   /**
    * 配置文件的版本
@@ -73,6 +75,8 @@ class NaotuConfig {
     ifSaveLogToDisk: boolean,
     editorWindowWidth: number,
     editorWindowHeight: number,
+    editorWindowX: number | undefined,
+    editorWindowY: number | undefined,
     version: string
   ) {
     this.locale = locale;
@@ -83,6 +87,8 @@ class NaotuConfig {
     this.ifSaveLogToDisk = ifSaveLogToDisk;
     this.editorWindowWidth = editorWindowWidth;
     this.editorWindowHeight = editorWindowHeight;
+    this.editorWindowX = editorWindowX;
+    this.editorWindowY = editorWindowY;
     this.version = version;
   }
 
@@ -111,6 +117,8 @@ class NaotuConfig {
     let ifSaveLogToDisk = confJson.ifSaveLogToDisk as boolean;
     let editorWindowWidth = confJson.editorWindowWidth as number;
     let editorWindowHeight = confJson.editorWindowHeight as number;
+    let editorWindowX = confJson.editorWindowX as number | undefined;
+    let editorWindowY = confJson.editorWindowY as number | undefined;
     let version = confJson.version as string;
 
     return new NaotuConfig(
@@ -122,6 +130,8 @@ class NaotuConfig {
       ifSaveLogToDisk,
       editorWindowWidth,
       editorWindowHeight,
+      editorWindowX,
+      editorWindowY,
       version
     );
   }
@@ -200,6 +210,8 @@ class DesktopConfig implements IDesktopConfig {
       if (oldModel.ifSaveLogToDisk) newModel.ifSaveLogToDisk = oldModel.ifSaveLogToDisk;
       if (oldModel.editorWindowWidth) newModel.editorWindowWidth = oldModel.editorWindowWidth;
       if (oldModel.editorWindowHeight) newModel.editorWindowHeight = oldModel.editorWindowHeight;
+      if (oldModel.editorWindowX) newModel.editorWindowX = oldModel.editorWindowX;
+      if (oldModel.editorWindowY) newModel.editorWindowY = oldModel.editorWindowY;
       if (oldModel.recently) newModel.recently = oldModel.recently;
 
       this.save(newModel);
@@ -219,6 +231,8 @@ class DesktopConfig implements IDesktopConfig {
       false,
       1000,     // 默认窗口宽度
       800,      // 默认窗口高度
+      undefined,  // 默认不设置窗口横轴位置，表示居中
+      undefined,  // 默认不设置窗口纵轴位置，表示居中
       sConfigVersion
     );
   }

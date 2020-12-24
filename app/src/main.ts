@@ -37,7 +37,13 @@ import { sIndexUrl } from "./define";
     let userHeight = (conf.editorWindowHeight && conf.editorWindowHeight >= 700)
       ? conf.editorWindowHeight : 800;
 
+    // 读取窗口位置
+    // 可指定为undefined，使Electron居中窗口
+    let userX = conf.editorWindowX;
+    let userY = conf.editorWindowY;
+
     logger.info(`Last saved window size: [${[userWidth, userHeight]}]`);
+    logger.info(`Last saved window position: [${[userX, userY]}]`);
 
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -45,6 +51,8 @@ import { sIndexUrl } from "./define";
       minHeight: 700,
       width: userWidth,
       height: userHeight,
+      x: userX,
+      y: userY,     // TODO: KDE下，窗口纵向位置不会被记忆。不知道其他平台会不会这样
 
       fullscreenable: true,
       show: false,
@@ -89,11 +97,14 @@ import { sIndexUrl } from "./define";
             // 修改配置项
             confObj.editorWindowWidth = mainWindow.getSize()[0];
             confObj.editorWindowHeight = mainWindow.getSize()[1];
+            confObj.editorWindowX = mainWindow.getPosition()[0];
+            confObj.editorWindowY = mainWindow.getPosition()[1];
 
             // 保存配置文件
             naotuConf.save(confObj);
 
             logger.info(`Saved current window size: [${confObj.editorWindowWidth}, ${confObj.editorWindowHeight}]`);
+            logger.info(`Saved current window position: [${confObj.editorWindowX}, ${confObj.editorWindowY}]`);
           } catch (ex) {
             logger.error(ex);
           }
