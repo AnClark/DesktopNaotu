@@ -14,6 +14,9 @@ import { shortcutDialog } from "./ui/shortcut";
 // 进入即记录日志
 logger.info("ipcRender init");
 
+// 设置窗口默认标题
+document.title = I18n.__("sAppName");
+
 // 初始化渲染菜单
 naotuMenu.render();
 
